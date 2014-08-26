@@ -71,3 +71,6 @@ state4->start;
 }
 ```
 
+The bash script bin/gotofsm-dot-viewer takes the same arguments as
+gotofsm-dot, but pipes the output to a file and launches the xdot
+viewer.
