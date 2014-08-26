@@ -47,7 +47,7 @@ func main() {
 			} 
 
 		case *ast.BranchStmt:
-			if inFunc && x.Tok == token.GOTO {
+			if inFunc && x.Tok == token.GOTO && curState != "" {
 				nextState = x.Label.Name
 				lines = append(lines, 
 					fmt.Sprintf("%v->%v;", curState, nextState))
