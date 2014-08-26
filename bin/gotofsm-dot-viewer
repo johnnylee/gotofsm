@@ -5,5 +5,5 @@ if [ "$#" -ne 2 ]; then
     exit
 fi
 
-t=__gotofsm_tmp__.dot
+t=$(mktemp)
 gotofsm-dot $@ > $t && xdot $t && unlink $t
