@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 [filename] [function]" 
+    exit
+fi
+
+t=__gotofms_tmp__.dot
+gotofsm-dot $@ > $t && xdot $t && unlink $t
