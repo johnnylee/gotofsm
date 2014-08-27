@@ -1,0 +1,11 @@
+digraph {
+start->state1;
+start->state2;
+state1->state3;
+state2->state4;
+state2->state1;
+state3->start;
+state3->end;
+state4->state1;
+state4->start;
+}
