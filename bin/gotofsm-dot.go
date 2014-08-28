@@ -32,7 +32,7 @@ func main() {
 
 	inFunc := false
 
-	curState := ""
+	curState := "start"
 	nextState := ""
 	
 	lines := make([]string, 0, 1)
