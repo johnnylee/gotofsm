@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 [filename] [function] [png-output-file]" 
+    exit
+fi
+
+t=$(mktemp)
+gotofsm-dot $1 $2 > $t &&
+dot $t -Tpng -o $3 &&
+unlink $t

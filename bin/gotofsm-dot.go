@@ -4,9 +4,7 @@ import (
 	"os"
 	"fmt"
 	"strings"
-	"go/token"
-	"go/parser"
-	"go/ast"
+	"github.com/johnnylee/gotofsm"
 )
 
 func printUsage() {
@@ -20,46 +18,26 @@ func main() {
 		return
 	}
 
-	filename := os.Args[1]
+	path := os.Args[1]
 	funcName := os.Args[2]
 	
-	fset := token.NewFileSet()
-
-	f, err := parser.ParseFile(fset, filename, nil, 0)
+	states, err := gotofsm.Analyze(path, funcName)
+	
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error: %v", err)
+		return
 	}
 
-	inFunc := false
-
-	curState := "start"
-	nextState := ""
-	
 	lines := make([]string, 0, 1)
 	lines = append(lines, "digraph {")
 	
-	ast.Inspect(f, func(n ast.Node) bool {
-		switch x := n.(type) {
-
-		case *ast.FuncDecl:
-			if x.Name.Name == funcName {
-				inFunc = true
-			} 
-
-		case *ast.BranchStmt:
-			if inFunc && x.Tok == token.GOTO && curState != "" {
-				nextState = x.Label.Name
-				lines = append(lines, 
-					fmt.Sprintf("%v->%v;", curState, nextState))
-			}
-
-		case *ast.LabeledStmt:
-			if inFunc {
-				curState = x.Label.Name
-			}
+	for _, state := range states {
+		for _, nextState := range state.Next {
+			lines = append(
+				lines, 
+				fmt.Sprintf("%v->%v;", state.Name, nextState.Name))
 		}
-		return true
-	})
+	}
 	
 	lines = append(lines, "}")
 	fmt.Println(strings.Join(lines, "\n"))
