@@ -10,7 +10,7 @@ The program in bin/gotofsm-dot.go will print a graphviz file for a
 state machine implemented using goto statements. Consider the
 following file:
 
-```
+```go
 package main
 
 func Run() {
